@@ -213,9 +213,9 @@ class MagentoCollection implements MagentoCollectionInterface
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getExportMode(): string
+    public function getExportMode(): ?string
     {
         return $this->helper->getExportMode();
     }

@@ -5,7 +5,6 @@ define(
 
         return function NewShipment(options, element)
         {
-
             var model = {
 
                 /**
@@ -48,10 +47,11 @@ define(
                         }
                     );
 
-                    $("#mypa_carrier_DPD").click(
+                    $("#mypa_carrier_redjepakketje").click(
                         function () {
-                            if ($('#mypa_carrier_DPD').prop("checked", true)) {
+                            if ($('#mypa_carrier_redjepakketje').prop("checked", true)) {
                                 $('.mypa-option-toggle').slideUp();
+                                $('.mypa-redjepakketje-option-toggle').slideDown();
                             }
                         }
                     );
@@ -69,6 +69,7 @@ define(
                 _checkOptionsField: function () {
                     if ($('#mypa_carrier_postnl').prop("checked", true)) {
                         $('.mypa-option-toggle').slideDown();
+                        $('.mypa-redjepakketje-option-toggle').slideUp();
                     }
                 },
 

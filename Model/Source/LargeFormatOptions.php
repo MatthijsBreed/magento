@@ -34,9 +34,9 @@ class LargeFormatOptions implements OptionSourceInterface
     public function toOptionArray()
     {
         return [
+            ['value' => '0', 'label' => __('No')],
             ['value' => 'price', 'label' => __('Price')],
-            ['value' => 'weight', 'label' => __('Weight')],
-            ['value' => '0', 'label' => __('No')]
+            ['value' => 'weight', 'label' => __('Weight')]
         ];
     }
 
@@ -48,9 +48,9 @@ class LargeFormatOptions implements OptionSourceInterface
     public function toArray()
     {
         return [
+            '0' => __('No'),
             'price' => __('Price'),
-            'weight' => __('Weight'),
-            '0' => __('No')
+            'weight' => __('Weight')
         ];
     }
 }

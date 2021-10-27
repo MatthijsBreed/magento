@@ -18,6 +18,8 @@ namespace MyParcelNL\Magento\Model\Source;
 use Magento\Framework\Data\OptionSourceInterface;
 use Magento\Sales\Model\Order;
 use MyParcelNL\Magento\Helper\Data;
+use MyParcelNL\Sdk\src\Model\Consignment\AbstractConsignment;
+use MyParcelNL\Sdk\src\Model\Consignment\PostNLConsignment;
 
 /**
  * @api

@@ -23,6 +23,7 @@ use Magento\Sales\Block\Adminhtml\Items\AbstractItems;
 use MyParcelNL\Magento\Helper\Checkout;
 use MyParcelNL\Magento\Model\Source\DefaultOptions;
 use MyParcelNL\Sdk\src\Adapter\DeliveryOptions\AbstractDeliveryOptionsAdapter;
+use MyParcelNL\Sdk\src\Model\Consignment\PostNLConsignment;
 
 class NewShipment extends AbstractItems
 {
@@ -74,28 +75,31 @@ class NewShipment extends AbstractItems
      */
     public function getDefaultOption($option)
     {
-        return $this->defaultOptions->getDefault($option);
+        return $this->defaultOptions->getDefault($option, PostNLConsignment::CARRIER_NAME);
     }
+
     /**
-     * @param string $option 'large_format'
+     * @param  string  $option  'large_format'
+     * @param  string  $carrier
      *
      * @return bool
      */
-    public function getDefaultLargeFormat(string $option): bool
+    public function getDefaultLargeFormat(string $option, string $carrier): bool
     {
-        return $this->defaultOptions->getDefaultLargeFormat($option);
+        return $this->defaultOptions->getDefaultLargeFormat($option, $carrier);
     }
 
     /**
      * Get default value of age check
      *
-     * @param string $option
+     * @param  string  $option
+     * @param  string  $carrier
      *
      * @return bool
      */
-    public function getDefaultOptionsWithoutPrice(string $option): bool
+    public function getDefaultOptionsWithoutPrice(string $option, string $carrier): bool
     {
-        return $this->defaultOptions->getDefaultOptionsWithoutPrice($option);
+        return $this->defaultOptions->getDefaultOptionsWithoutPrice($option, $carrier);
     }
 
     /**
@@ -104,7 +108,7 @@ class NewShipment extends AbstractItems
      */
     public function getDefaultInsurance()
     {
-        return $this->defaultOptions->getDefaultInsurance();
+        return $this->defaultOptions->getDefaultInsurance(PostNLConsignment::CARRIER_NAME);
     }
 
     /**

@@ -22,19 +22,21 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Module\ModuleListInterface;
 use Magento\Store\Model\ScopeInterface;
 use MyParcelNL\Sdk\src\Model\Consignment\AbstractConsignment;
-use MyParcelNL\Sdk\src\Model\Consignment\DPDConsignment;
 use MyParcelNL\Sdk\src\Model\Consignment\PostNLConsignment;
+use MyParcelNL\Sdk\src\Model\Consignment\RedJePakketjeConsignment;
 use MyParcelNL\Sdk\src\Services\CheckApiKeyService;
 
 class Data extends AbstractHelper
 {
-    public const MODULE_NAME              = 'MyParcelNL_Magento';
-    public const XML_PATH_GENERAL         = 'myparcelnl_magento_general/';
-    public const XML_PATH_POSTNL_SETTINGS = 'myparcelnl_magento_postnl_settings/';
-    public const DEFAULT_WEIGHT           = 1000;
-    public const CARRIERS                 = [PostNLConsignment::CARRIER_NAME];
-    public const CARRIERS_XML_PATH_MAP    = [
-        PostNLConsignment::CARRIER_NAME => Data::XML_PATH_POSTNL_SETTINGS,
+    public const MODULE_NAME                     = 'MyParcelNL_Magento';
+    public const XML_PATH_GENERAL                = 'myparcelnl_magento_general/';
+    public const XML_PATH_POSTNL_SETTINGS        = 'myparcelnl_magento_postnl_settings/';
+    public const XML_PATH_REDJEPAKKETJE_SETTINGS = 'myparcelnl_magento_redjepakketje_settings/';
+    public const DEFAULT_WEIGHT                  = 1000;
+    public const CARRIERS                        = [PostNLConsignment::CARRIER_NAME, RedJePakketjeConsignment::CARRIER_NAME];
+    public const CARRIERS_XML_PATH_MAP           = [
+        PostNLConsignment::CARRIER_NAME        => Data::XML_PATH_POSTNL_SETTINGS,
+        RedJePakketjeConsignment::CARRIER_NAME => Data::XML_PATH_REDJEPAKKETJE_SETTINGS,
     ];
 
     private $moduleList;
@@ -90,14 +92,15 @@ class Data extends AbstractHelper
     /**
      * Get default settings
      *
-     * @param string $code
-     * @param null   $storeId
+     * @param  string  $code
+     * @param  null    $storeId
+     * @param  string  $carrier
      *
      * @return mixed
      */
-    public function getStandardConfig($code = '', $storeId = null)
+    public function getStandardConfig(string $code = '', string $carrier = PostNLConsignment::CARRIER_NAME, $storeId = null)
     {
-        return $this->getConfigValue(self::XML_PATH_POSTNL_SETTINGS . $code, $storeId);
+        return $this->getConfigValue(self::CARRIERS_XML_PATH_MAP[$carrier] . $code, $storeId);
     }
 
     /**
@@ -111,13 +114,9 @@ class Data extends AbstractHelper
     public function getCarrierConfig($code, $carrier)
     {
         $settings = $this->getConfigValue($carrier . $code);
-        if ($settings == null) {
-            $value = $this->getConfigValue($carrier . $code);
-            if ($value != null) {
-                return $value;
-            } else {
-                $this->_logger->critical('Can\'t get setting with path:' . $carrier . $code);
-            }
+
+        if (null === $settings) {
+            $this->_logger->critical('Can\'t get setting with path:' . $carrier . $code);
         }
 
         return $settings;
@@ -238,9 +237,9 @@ class Data extends AbstractHelper
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getExportMode(): string
+    public function getExportMode(): ?string
     {
         return $this->getGeneralConfig('print/export_mode');
     }

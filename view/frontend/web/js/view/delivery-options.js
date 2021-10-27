@@ -77,6 +77,9 @@ define(
         'myparcelnl_magento_postnl_settings/morning/only_recipient/signature': 'config.carrierSettings.postnl.priceMorningSignature',
         'myparcelnl_magento_postnl_settings/evening/only_recipient/signature': 'config.carrierSettings.postnl.priceEveningSignature',
         'myparcelnl_magento_postnl_settings/delivery/only_recipient/signature': 'config.carrierSettings.postnl.priceSignatureAndOnlyRecipient',
+        'myparcelnl_magento_redjepakketje_settings/delivery': 'config.carrierSettings.redjepakketje.priceStandardDelivery',
+        'myparcelnl_magento_redjepakketje_settings/delivery/only_recipient/signature': 'config.carrierSettings.redjepakketje.priceSignatureAndOnlyRecipient',
+        'myparcelnl_magento_redjepakketje_settings/mailbox': 'config.carrierSettings.redjepakketje.pricePackageTypeMailbox',
       },
 
       /**
@@ -85,6 +88,8 @@ define(
       methodCodeShipmentOptionsConfigMap: {
         'myparcelnl_magento_postnl_settings/delivery/signature': 'config.carrierSettings.postnl.priceSignature',
         'myparcelnl_magento_postnl_settings/delivery/only_recipient': 'config.carrierSettings.postnl.priceOnlyRecipient',
+        'myparcelnl_magento_redjepakketje_settings/delivery/signature': 'config.carrierSettings.redjepakketje.priceSignature',
+        'myparcelnl_magento_redjepakketje_settings/delivery/only_recipient': 'config.carrierSettings.redjepakketje.priceOnlyRecipient',
       },
 
       /**

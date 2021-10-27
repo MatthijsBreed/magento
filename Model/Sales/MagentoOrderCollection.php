@@ -27,7 +27,6 @@ use MyParcelNL\Sdk\src\Model\Fulfilment\Order as FulfilmentOrder;
 use MyParcelNL\Sdk\src\Model\Recipient;
 use MyParcelNL\Sdk\src\Support\Collection;
 
-
 /**
  * Class MagentoOrderCollection
  *
@@ -393,13 +392,7 @@ class MagentoOrderCollection extends MagentoCollection
             return $this;
         }
 
-        try {
-            $this->myParcelCollection->createConcepts();
-        } catch (\Exception $e) {
-            $this->messageManager->addErrorMessage($e->getMessage());
-            return $this;
-        }
-
+        $this->myParcelCollection->createConcepts();
         $this->myParcelCollection->setLatestData();
 
         /**
@@ -486,8 +479,10 @@ class MagentoOrderCollection extends MagentoCollection
                     $magentoTrack->setData('myparcel_status', $myParcelTrack->getStatus());
                 }
 
-                if ($myParcelTrack->getBarcode()) {
-                    $magentoTrack->setTrackNumber($myParcelTrack->getBarcode());
+                $barcode = $myParcelTrack->getBarcode() ?: $myParcelTrack->getExternalIdentifier();
+
+                if ($barcode) {
+                    $magentoTrack->setTrackNumber($barcode);
                 }
 
                 $magentoTrack->save();

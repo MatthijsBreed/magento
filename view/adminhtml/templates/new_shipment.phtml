@@ -60,18 +60,16 @@
             <?= $block->getDefaultOption('return') == true ? 'checked="checked"' : '';?>
         />
         <label class="admin__field-label" for="mypa_return">
-            <span><?=__('Return if no answe') ?></span>
+            <span><?=__('Return if no answer') ?></span>
         </label>
     </div>
-
-
     <div class="field choice admin__field admin__field-option field-mypa_large_format mypa_package-toggle mypa-option-toggle" style="display:none; padding-left: 30px;">
         <input id="mypa_large_format"
                class="admin__control-checkbox"
                name="mypa_large_format"
                value="1"
                type="checkbox"
-            <?= $block->getDefaultLargeFormat('large_format') == true ? 'checked="checked"' : '';?>
+            <?= $block->getDefaultLargeFormat('large_format', 'postnl') == true ? 'checked="checked"' : '';?>
         />
         <label class="admin__field-label" for="mypa_return">
             <span><?=__('Large package') ?></span>
@@ -84,7 +82,7 @@
                name="mypa_age_check"
                value="1"
                type="checkbox"
-            <?=$block->getDefaultOptionsWithoutPrice('age_check') == true ? 'checked="checked"' : '';?>
+            <?=$block->getDefaultOptionsWithoutPrice('age_check', 'postnl') == true ? 'checked="checked"' : '';?>
         />
         <label class="admin__field-label" for="mypa_age_check">
             <span><?=__('Age check 18+') ?></span>
@@ -136,15 +134,62 @@
        }
     </script>
 <?php endif; ?>
-
-<!--    <div class="field field-mypa_carrier_DPD mypa_carrier-toggle" style="margin-top: 10px;">-->
-<!--        <div class="admin__field-control">-->
-<!--            <div class="admin__field admin__field-option">-->
-<!--                <input type="radio" class="admin__control-radio" id="mypa_carrier_DPD" name="mypa_carrier" value="dpd">-->
-<!--                <label class="admin__field-label" for="mypa_carrier">--><?//=__('DPD');?><!--</label>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div class="field field-mypa_carrier_redjepakketje mypa_carrier-toggle" style="margin-top: 10px;">
+        <div class="admin__field-control">
+            <div class="admin__field admin__field-option">
+                <input type="radio" class="admin__control-radio" id="mypa_carrier_redjepakketje" name="mypa_carrier" value="redjepakketje">
+                <label class="admin__field-label" for="mypa_carrier"><?=__('Red je Pakketje');?></label>
+            </div>
+        </div>
+    </div>
+    <div class="field choice admin__field admin__field-option field-mypa_only_recipient mypa_package-toggle mypa-redjepakketje-option-toggle" style="display:none; padding-left: 30px;">
+        <input id="mypa_only_recipient"
+               class="admin__control-checkbox"
+               name="mypa_only_recipient"
+               value="1"
+               type="checkbox"
+            <?= $block->getDefaultOption('only_recipient') == true ? 'checked="checked"' : '';?>
+        />
+        <label class="admin__field-label" for="mypa_only_recipient">
+            <span><?=__('Home address only') ?></span>
+        </label>
+    </div>
+    <div class="field choice admin__field admin__field-option field-mypa_large_format mypa_package-toggle mypa-redjepakketje-option-toggle" style="display:none; padding-left: 30px;">
+        <input id="mypa_large_format"
+               class="admin__control-checkbox"
+               name="mypa_large_format"
+               value="1"
+               type="checkbox"
+            <?= $block->getDefaultLargeFormat('large_format', 'redjepakketje') == true ? 'checked="checked"' : '';?>
+        />
+        <label class="admin__field-label" for="mypa_return">
+            <span><?=__('Large package') ?></span>
+        </label>
+    </div>
+    <div class="field choice admin__field admin__field-option field-mypa_return mypa_package-toggle mypa-redjepakketje-option-toggle" style="display:none; padding-left: 30px;">
+        <input id="mypa_return"
+               class="admin__control-checkbox"
+               name="mypa_return"
+               value="1"
+               type="checkbox"
+            <?= $block->getDefaultOption('return') == true ? 'checked="checked"' : '';?>
+        />
+        <label class="admin__field-label" for="mypa_return">
+            <span><?=__('Return if no answer') ?></span>
+        </label>
+    </div>
+    <div class="field choice admin__field admin__field-option field-mypa_age_check mypa_package-toggle mypa-redjepakketje-option-toggle" style="display:none; padding-left: 30px;">
+        <input id="mypa_age_check"
+               class="admin__control-checkbox"
+               name="mypa_age_check"
+               value="1"
+               type="checkbox"
+            <?=$block->getDefaultOptionsWithoutPrice('age_check', 'redjepakketje') == true ? 'checked="checked"' : '';?>
+        />
+        <label class="admin__field-label" for="mypa_age_check">
+            <span><?=__('Age check 18+') ?></span>
+        </label>
+    </div>
     <div class="field field-mypa_package_type" style="margin-top: 10px;">
         <div class="admin__field-control">
             <div class="admin__field admin__field-option">

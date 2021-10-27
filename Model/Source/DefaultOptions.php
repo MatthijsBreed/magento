@@ -20,6 +20,8 @@ use MyParcelNL\Magento\Helper\Data;
 use MyParcelNL\Magento\Model\Sales\Package;
 use MyParcelNL\Magento\Model\Sales\Repository\PackageRepository;
 use MyParcelNL\Sdk\src\Model\Consignment\AbstractConsignment;
+use MyParcelNL\Sdk\src\Model\Consignment\PostNLConsignment;
+use function Couchbase\defaultDecoder;
 
 class DefaultOptions
 {
@@ -62,7 +64,7 @@ class DefaultOptions
      *
      * @return bool
      */
-    public function getDefault($option)
+    public function getDefault($option, string $carrier)
     {
         // Check that the customer has already chosen this option in the checkout
         if (is_array(self::$chosenOptions) &&
@@ -74,10 +76,11 @@ class DefaultOptions
         }
 
         $total    = self::$order->getGrandTotal();
-        $settings = self::$helper->getStandardConfig('default_options');
+        $settings = self::$helper->getStandardConfig('default_options', $carrier);
 
-        if ($settings[$option . '_active'] == '1' &&
-            (! $settings[$option . '_from_price'] || $total > (int) $settings[$option . '_from_price'])
+        if (isset($settings[$option . '_active']) &&
+            $settings[$option . '_active'] === '1' &&
+            (! $settings[$option . '_from_price'] || $total > (int)$settings[$option . '_from_price'])
         ) {
             return true;
         }
@@ -102,25 +105,26 @@ class DefaultOptions
     /**
      * Get default value of options without price check
      *
-     * @param string $option
+     * @param  string  $option
+     * @param  string  $carrier
      *
      * @return bool
      */
-    public function getDefaultLargeFormat(string $option): bool
+    public function getDefaultLargeFormat(string $option, string $carrier): bool
     {
-        $price  = self::$order->getGrandTotal();
-        $weight = self::$order->getWeight();
+        $price    = self::$order->getGrandTotal();
+        $weight   = self::$helper->getWeightTypeOfOption(self::$order->getWeight());
+        $settings = self::$helper->getStandardConfig('default_options', $carrier);
 
-        $settings = self::$helper->getStandardConfig('default_options');
         if (isset($settings[$option . '_active']) &&
-            $settings[$option . '_active'] == 'weight' &&
+            $settings[$option . '_active'] === 'weight' &&
             $weight >= PackageRepository::DEFAULT_LARGE_FORMAT_WEIGHT
         ) {
             return true;
         }
 
         if (isset($settings[$option . '_active']) &&
-            $settings[$option . '_active'] == 'price' &&
+            $settings[$option . '_active'] === 'price' &&
             $price >= $settings[$option . '_from_price']
         ) {
             return true;
@@ -134,9 +138,9 @@ class DefaultOptions
      *
      * @return bool
      */
-    public function getDefaultOptionsWithoutPrice(string $option): bool
+    public function getDefaultOptionsWithoutPrice(string $option, string $carrier): bool
     {
-        $settings = self::$helper->getStandardConfig('default_options');
+        $settings = self::$helper->getStandardConfig('default_options', $carrier);
 
         return $settings[$option . '_active'] === '1';
     }
@@ -144,19 +148,21 @@ class DefaultOptions
     /**
      * Get default value of insurance based on order grand total
      *
+     * @param  string  $carrier
+     *
      * @return int
      */
-    public function getDefaultInsurance()
+    public function getDefaultInsurance(string $carrier)
     {
-        if ($this->getDefault('insurance_500')) {
+        if ($this->getDefault('insurance_500', $carrier)) {
             return 500;
         }
 
-        if ($this->getDefault('insurance_250')) {
+        if ($this->getDefault('insurance_250', $carrier)) {
             return 250;
         }
 
-        if ($this->getDefault('insurance_100')) {
+        if ($this->getDefault('insurance_100', $carrier)) {
             return 100;
         }
 
